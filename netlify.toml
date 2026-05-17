@@ -1,0 +1,16 @@
+# Static frontend only. Run the API (Express + MongoDB + Socket.IO) on Render or similar,
+# then set Netlify env vars VITE_API_URL and VITE_SOCKET_URL to that API origin.
+
+[build]
+  base = "client"
+  command = "npm ci && npm run build"
+  publish = "client/dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Client-side routing (React Router)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

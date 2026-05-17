@@ -3,12 +3,11 @@ services:
     name: smart-city-map
     runtime: node
     plan: free
-    buildCommand: npm install && npm install --prefix server && npm install --prefix client && npm run build
-    startCommand: npm run start:prod
+    # NODE_ENV=production skips devDependencies (vite). Install dev deps at build; production only at start.
+    buildCommand: NPM_CONFIG_PRODUCTION=false npm install && NPM_CONFIG_PRODUCTION=false npm install --prefix server && NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build
+    startCommand: NODE_ENV=production node server/src/index.js
     healthCheckPath: /api/health
     envVars:
-      - key: NODE_ENV
-        value: production
       - key: JWT_SECRET
         generateValue: true
       - key: MONGODB_URI

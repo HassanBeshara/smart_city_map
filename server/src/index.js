@@ -94,8 +94,15 @@ io.on('connection', (socket) => {
 const PORT = process.env.PORT || 5000;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/smart-city-map';
 
+if (!process.env.MONGODB_URI && isProd) {
+  console.error(
+    'MONGODB_URI is not set. In Render: open your Web Service → Environment (not only an Environment Group) → add MONGODB_URI with your Atlas connection string.'
+  );
+  process.exit(1);
+}
+
 mongoose
-  .connect(MONGODB_URI)
+  .connect(MONGODB_URI, { serverSelectionTimeoutMS: 15000 })
   .then(() => {
     httpServer.listen(PORT, '0.0.0.0', () => {
       console.log(`Server running on port ${PORT} (${isProd ? 'production' : 'development'})`);
@@ -104,5 +111,8 @@ mongoose
   })
   .catch((err) => {
     console.error('MongoDB connection error:', err.message);
+    if (/authentication failed|bad auth/i.test(err.message)) {
+      console.error('Check Atlas username/password in MONGODB_URI. URL-encode special characters in the password.');
+    }
     process.exit(1);
   });

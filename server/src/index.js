@@ -2,7 +2,6 @@ import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -10,8 +9,9 @@ import { fileURLToPath } from 'url';
 import authRoutes from './routes/auth.js';
 import markerRoutes from './routes/markers.js';
 import adminRoutes from './routes/admin.js';
+import { loadEnv } from './loadEnv.js';
 
-dotenv.config();
+loadEnv();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const isProd = process.env.NODE_ENV === 'production';
@@ -95,9 +95,12 @@ const PORT = process.env.PORT || 5000;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/smart-city-map';
 
 if (!process.env.MONGODB_URI && isProd) {
-  console.error(
-    'MONGODB_URI is not set. In Render: open your Web Service → Environment (not only an Environment Group) → add MONGODB_URI with your Atlas connection string.'
-  );
+  console.error('MONGODB_URI is not set.');
+  console.error('Render fix: Dashboard → your WEB SERVICE (e.g. smart-city-map) → Environment → Add:');
+  console.error('  Key: MONGODB_URI');
+  console.error('  Value: mongodb+srv://USER:PASSWORD@cluster0....mongodb.net/smart-city-map?...');
+  console.error('Then Save Changes. In Shell run: printenv MONGODB_URI  (must not be empty).');
+  console.error('Or: Environment → Secret Files → upload .env with MONGODB_URI=...');
   process.exit(1);
 }
 

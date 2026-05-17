@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
 import User from './models/User.js';
 import Marker from './models/Marker.js';
 import { SAMPLE_PLACES, NYC_PLACES, LEBANON_PLACES } from './data/samplePlaces.js';
+import { loadEnv } from './loadEnv.js';
 
-dotenv.config();
+loadEnv();
 
 async function seed() {
   await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/smart-city-map');

@@ -18,7 +18,6 @@
     "react-leaflet": "^4.2.1",
     "react-leaflet-cluster": "^2.1.0",
     "react-router-dom": "^6.28.0",
-    "smart-city-map": "file:..",
     "socket.io-client": "^4.7.5"
   },
   "devDependencies": {

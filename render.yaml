@@ -3,7 +3,7 @@ services:
     name: smart-city-map
     runtime: node
     plan: free
-    buildCommand: npm run build:prod
+    buildCommand: npm install && npm install --prefix server && npm install --prefix client && npm run build
     startCommand: npm run start:prod
     healthCheckPath: /api/health
     envVars:
